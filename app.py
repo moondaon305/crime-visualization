@@ -11,7 +11,7 @@ df = pd.read_csv(csv_path, encoding='utf-8')
 
 
 # 2. 데이터 형태 변환 (wide → long)
-df_long = df.melt(id_vars=['범죄 대분류', '범죄 중분류'], var_name='지역', value_name='발생건수')
+df_long = df.melt(id_vars=['범죄대분류', '범죄 중분류'], var_name='지역', value_name='발생건수')
 
 # 3. 지역별 범죄 발생 건수 합계 (범죄 유형 구분 없이 전체 합)
 df_grouped = df_long.groupby('지역')['발생건수'].sum().reset_index()
