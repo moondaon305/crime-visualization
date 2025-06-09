@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 st.title("📊 범죄 발생 지역별 통계 시각화")
 
 uploaded_file = st.file_uploader("CSV 파일을 업로드하세요", type=["csv"])
-if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
+    if uploaded_file is not None:
+        try:
+        df = pd.read_csv(uploaded_file, encoding='utf-8')
+    except UnicodeDecodeError:
+        df = pd.read_csv(uploaded_file, encoding='cp949')
+
     st.write("데이터 미리보기:")
     st.dataframe(df)
 
