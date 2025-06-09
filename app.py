@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 
 # GitHub 저장소 raw 파일 URL
-csv_url = "https://github.com/moondaon305/crime-visualization/raw/main/crime.csv"
+csv_url = "https://raw.githubusercontent.com/moondaon305/crime-visualization/main/crime.csv"
+
 
 st.title("범죄 발생 지역별 통계 시각화")
 
