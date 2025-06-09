@@ -7,7 +7,8 @@ st.title("한반도 범죄 발생 지역별 통계 시각화")
 
 # 1. CSV 데이터 불러오기 (여기에 본인 csv raw github URL 또는 로컬 파일 경로 넣기)
 csv_path = "https://raw.githubusercontent.com/moondaon305/crime-visualization/main/crime_data.csv"
-df = pd.read_csv(csv_path, encoding='cp949')
+df = pd.read_csv(csv_path, encoding='utf-8')
+
 
 # 2. 데이터 형태 변환 (wide → long)
 df_long = df.melt(id_vars=['범죄 대분류', '범죄 중분류'], var_name='지역', value_name='발생건수')
