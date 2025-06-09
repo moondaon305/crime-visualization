@@ -6,7 +6,7 @@ import plotly.express as px
 st.title("한반도 범죄 발생 지역별 통계 시각화")
 
 csv_path = "https://raw.githubusercontent.com/moondaon305/crime-visualization/main/crime_data.csv"
-df = pd.read_csv(csv_path, encoding='cp949')
+df = pd.read_csv(csv_path, encoding='utf-8')
 
 df_long = df.melt(id_vars=['범죄대분류', '범죄중분류'], var_name='지역', value_name='발생건수')
 df_grouped = df_long.groupby('지역')['발생건수'].sum().reset_index()
