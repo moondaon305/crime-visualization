@@ -1,39 +1,20 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-st.set_page_config(page_title="범죄 발생 지역별 통계", layout="wide")
+# GitHub 저장소 raw 파일 URL
+csv_url = "https://github.com/moondaon305/crime-visualization/raw/main/crime.csv"
 
-st.title("📊 범죄 발생 지역별 통계 시각화")
+st.title("범죄 발생 지역별 통계 시각화")
 
-uploaded_file = st.file_uploader("CSV 파일을 업로드하세요", type=["csv"])
+try:
+    df = pd.read_csv(csv_url, encoding='cp949')  # 인코딩 문제 발생 시 utf-8로 변경해보세요
+    st.write("데이터 미리보기")
+    st.dataframe(df.head())
 
-if uploaded_file is not None:
-    try:
-        df = pd.read_csv(uploaded_file, encoding='utf-8')
-    except UnicodeDecodeError:
-        df = pd.read_csv(uploaded_file, encoding='cp949')
-    except pd.errors.EmptyDataError:
-        st.error("⚠️ CSV 파일이 비어 있거나 내용을 읽을 수 없습니다.")
-    else:
-        st.success("✅ 데이터 업로드 성공!")
-        
-        # '지역' 열을 문자열로 변환
-        df['지역'] = df['지역'].astype(str)
+    # 예시: 지역별 범죄 건수 합계 계산 및 시각화
+    crime_sum_by_region = df.groupby('지역')['범죄건수'].sum().reset_index()
 
-        st.subheader("📌 데이터 미리보기")
-        st.dataframe(df)
+    st.bar_chart(crime_sum_by_region.set_index('지역'))
 
-        st.subheader("📍 지역별 범죄 건수 비교")
-
-        crime_types = ['살인', '강도', '강간·강제추행', '절도', '폭력']
-        selected_crime = st.selectbox("🔎 분석할 범죄 유형을 선택하세요:", crime_types)
-
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.barplot(x='지역', y=selected_crime, data=df, ax=ax, palette='coolwarm')
-        plt.xticks(rotation=45)
-        plt.title(f"{selected_crime} 발생 건수 (지역별)")
-        st.pyplot(fig)
-else:
-    st.info("⬅️ 왼쪽에서 CSV 파일을 업로드해 주세요.")
+except Exception as e:
+    st.error(f"파일 읽기 중 오류 발생: {e}")
